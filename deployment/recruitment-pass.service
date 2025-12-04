@@ -1,0 +1,38 @@
+# Systemd service file for Baynunah Recruitment Pass
+# Copy this file to /etc/systemd/system/recruitment-pass.service
+# Usage:
+#   sudo systemctl enable recruitment-pass
+#   sudo systemctl start recruitment-pass
+#   sudo systemctl status recruitment-pass
+
+[Unit]
+Description=Baynunah Recruitment Pass Application
+Documentation=https://github.com/ismaelloveexcel/recruitmentprogresspass
+After=network.target mysql.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/recruitmentprogresspass
+Environment="NODE_ENV=production"
+Environment="PORT=4173"
+# Add your DATABASE_URL and other environment variables in /etc/systemd/system/recruitment-pass.service.d/override.conf
+# Or use an EnvironmentFile directive:
+# EnvironmentFile=/var/www/recruitmentprogresspass/.env
+ExecStart=/usr/bin/node /var/www/recruitmentprogresspass/dist/index.js
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=recruitment-pass
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/recruitmentprogresspass
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target
