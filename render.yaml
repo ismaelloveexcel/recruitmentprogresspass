@@ -15,7 +15,7 @@ services:
           name: recruitment-pass-db
           property: connectionString
       - key: ADMIN_EMAIL
-        value: mohammad.sudally@baynunah.ae
+        sync: false  # Set this in Render dashboard
     healthCheckPath: /health
 
 databases:

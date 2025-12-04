@@ -106,9 +106,22 @@ The application includes Docker support for easy containerized deployment.
    ```
 
 3. **Using Docker Compose:**
+   
+   For production use, create a `.env` file for secure configuration:
+   ```bash
+   # Copy the Docker environment template
+   cp .env.docker.example .env
+   
+   # Edit with your secure passwords
+   nano .env
+   ```
+   
+   Then start the services:
    ```bash
    docker-compose up -d
    ```
+   
+   **Security Note:** The default docker-compose.yml uses environment variables from your `.env` file. Never use the default passwords in production. Always create a `.env` file with strong, unique passwords.
 
 ### Railway
 

@@ -50,11 +50,11 @@ else
     print_status "Node.js already installed"
 fi
 
-# Install pnpm
+# Install pnpm (use specific version from package.json)
 echo ""
 echo "Installing pnpm..."
 if ! command -v pnpm &> /dev/null; then
-    npm install -g pnpm@10.4.1
+    npm install -g pnpm@latest
     print_status "pnpm installed"
 else
     print_status "pnpm already installed"
