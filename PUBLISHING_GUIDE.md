@@ -88,6 +88,10 @@ railway up
 #### Option B: Docker
 
 ```bash
+# Copy and configure environment for Docker
+cp .env.docker.example .env
+nano .env  # Edit with your secure passwords
+
 # Build and run with Docker Compose
 docker-compose up -d
 
