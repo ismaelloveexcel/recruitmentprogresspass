@@ -60,3 +60,52 @@ pnpm start            # serves dist/index.js and dist/public assets
 
 - `pnpm check` validates all TypeScript eagerly.
 - `pnpm test` is wired for future Vitest suites.
+
+## Deployment
+
+This application can be deployed to various platforms and hosting providers. See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for comprehensive deployment instructions including:
+
+- **Environment Configuration** - Required environment variables
+- **Docker Deployment** - Containerized deployment with Docker and Docker Compose
+- **Platform-Specific Guides** - Step-by-step instructions for:
+  - Railway
+  - Render
+  - DigitalOcean App Platform
+  - AWS (EC2/ECS)
+  - VPS/Dedicated Servers
+- **Database Setup** - MySQL configuration and migrations
+- **SSL/HTTPS Setup** - Security best practices
+- **Monitoring & Scaling** - Production maintenance
+
+### Quick Start Deployment Options
+
+#### Using Docker Compose (Recommended for local/testing)
+```bash
+# Clone and navigate to the repository
+git clone <your-repo-url>
+cd recruitmentprogresspass
+
+# Start the application with MySQL database
+docker-compose up -d
+
+# Access at http://localhost:4173
+```
+
+#### Using Railway (Fastest cloud deployment)
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login and deploy
+railway login
+railway init
+railway up
+```
+
+#### Using a VPS Server
+```bash
+# Run the automated deployment script (Ubuntu/Debian)
+sudo bash deployment/deploy.sh
+```
+
+For detailed instructions, troubleshooting, and platform-specific configurations, please refer to **[DEPLOYMENT.md](./DEPLOYMENT.md)**.

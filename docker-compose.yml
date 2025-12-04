@@ -1,0 +1,61 @@
+version: '3.8'
+
+# IMPORTANT: For production, create a .env file with strong passwords
+# Or export these environment variables before running docker-compose:
+#   export MYSQL_ROOT_PASSWORD=your_strong_password
+#   export MYSQL_PASSWORD=your_strong_password
+#   export ADMIN_EMAIL=your_email@example.com
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: recruitment-pass-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-recruitment_pass}
+      MYSQL_USER: ${MYSQL_USER:-recruitment_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-recruitment_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recruitment-pass-app
+    restart: unless-stopped
+    ports:
+      - "4173:4173"
+    environment:
+      NODE_ENV: production
+      PORT: 4173
+      DATABASE_URL: ${DATABASE_URL:-mysql://recruitment_user:recruitment_password@db:3306/recruitment_pass}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-mohammad.sudally@baynunah.ae}
+      # Add other environment variables as needed
+      # AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      # AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      # AWS_REGION: ${AWS_REGION}
+      # AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4173/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  db_data:
+    driver: local
